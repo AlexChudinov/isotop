@@ -3,15 +3,15 @@ from argparse import ArgumentParser
 
 import pandas as pd
 
-argparser = ArgumentParser(description="Скрипт для создания первичных, элементарных SQL таблиц")
-argparser.add_argument("--out", type=str, help="Файл, куда выводим команды для создания первичных таблиц", required=True)
+argparser = ArgumentParser(description="Генерирует исходные элементарные SQL таблицы")
+argparser.add_argument("--out", type=str, help="Результат: файл с SQL командами для создания таблиц", required=True)
 
 args = argparser.parse_args()
 
 _SCRIPT_PATH = path.dirname(path.abspath(__file__))
 
-# Источник таблицы: "https://dpva.ru/Guide/GuideChemistry/PeriodicalMendeleevTable/IsotopiAbundance1/"
-# Ниже, видимо, оригинальная ссылка: "Ted Pella Inc, USA - продукты для микроскопии"
+# Источник: "https://dpva.ru/Guide/GuideChemistry/PeriodicalMendeleevTable/IsotopiAbundance1/"
+# Кажется, оригинальная ссылка: "Ted Pella Inc, USA - продукты для микроскопии"
 
 def parse_element(el: str):
     name = ''.join(filter(str.isalpha, el))
@@ -36,7 +36,7 @@ df['queries'] = "INSERT INTO `distribution` VALUES ("\
 
 bruttos = set(df['name'].values)
 
-print("Создание таблицу изотопов...")
+print("Создание таблицы изотопов...")
 with open(args.out, "w") as file:
     file.write('USE `isotop`;\n')
     file.write('INSERT INTO `isotop_tables` (`source`,`mass_accuracy`,`abundance_accurace`) '
