@@ -1,7 +1,16 @@
 #include <gtest/gtest.h>
+#include <filesystem>
 #include <map>
 #include <memory>
 #include "../mysql.h"
+
+#ifndef DATA_DIR
+#error "data directory for tests was not defined"
+#endif
+
+const std::filesystem::path DATA_PATH(DATA_DIR);
+const std::string DB_CREDS = DATA_PATH / "isotop_user.json";
+
 
 class TestDatabase : public ::testing::Test {
 public:
@@ -11,7 +20,7 @@ private:
     void SetUp() {
         ASSERT_NO_THROW(mySQL = std::make_unique<IsotopParser::MySQL>());
         IsotopParser::MySQL::User user;
-        ASSERT_NO_THROW(user = IsotopParser::MySQL::ReadJsonFile("./data/isotop_user.json"));
+        ASSERT_NO_THROW(user = IsotopParser::MySQL::ReadJsonFile(DB_CREDS));
         ASSERT_NO_THROW(mySQL->Connect(user));
     }
 };

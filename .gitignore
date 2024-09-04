@@ -1,5 +1,5 @@
 .vscode/
 .VSCodeCounter/
-**/build/
-**/venv/
+build/
+venv/
 isotop_user.json
