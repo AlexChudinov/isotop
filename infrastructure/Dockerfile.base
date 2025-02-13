@@ -1,0 +1,31 @@
+FROM ubuntu:22.04
+
+ENV GRPC_SRC_DIR=/usr/src/grpc
+ENV GRPC_INSTALL_DIR=/opt/grpc
+ENV LD_LIBRARY_PATH="/opt/grpc/lib:$LD_LIBRARY_PATH"
+ENV DEBIAN_FRONTEND=noninteractive
+
+COPY grpc /usr/src/grpc
+
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    autoconf \
+    libtool \
+    pkg-config \
+    libgflags-dev \
+    libgtest-dev \
+    clang \
+    libc++-dev \
+    cmake \
+    git
+
+RUN mkdir -p ${GRPC_SRC_DIR}/build
+RUN cd ${GRPC_SRC_DIR}/build && cmake \
+    -DgRPC_INSTALL=ON \
+    -DgRPC_BUILD_TESTS=OFF \
+    -DCMAKE_CXX_STANDARD=17 \
+    -DCMAKE_INSTALL_PREFIX=${GRPC_INSTALL_DIR} \
+    .. \
+    && make -j 4 \
+    && make install
+RUN rm -rf ${GRPC_SRC_DIR}/build

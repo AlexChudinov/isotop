@@ -1,0 +1,10 @@
+FROM isotope-base:1
+
+RUN apt-get install -y libgtest-dev cmake
+RUN cd /usr/src/gtest
+RUN cmake CMakeLists.txt
+RUN make
+RUN cp lib/*.a /usr/lib
+RUN mkdir -p /usr/local/lib/gtest
+RUN ln -sf /usr/lib/libgtest.a /usr/local/lib/gtest/libgtest.a
+RUN ln -sf /usr/lib/libgtest_main.a /usr/local/lib/gtest/libgtest_main.a
