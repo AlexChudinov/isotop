@@ -1,7 +1,7 @@
 project(tests)
 
-file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/data)
-add_compile_definitions(DATA_DIR="${CMAKE_BINARY_DIR}/data")
+add_compile_definitions(DATA_DIR="${CMAKE_CURRENT_BINARY_DIR}/data")
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/data DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 find_package(GTest REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})
