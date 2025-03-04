@@ -1,10 +1,20 @@
-FROM isotope-base:1
+FROM isotop-base:1
 
-RUN apt-get install -y libgtest-dev cmake
-RUN cd /usr/src/gtest
-RUN cmake CMakeLists.txt
-RUN make
-RUN cp lib/*.a /usr/lib
+RUN apt-get update && apt-get install -y \
+    libgtest-dev \
+    cmake \
+    wget \
+    libmysqlclient-dev \
+    build-essential \
+    gdb
+RUN cd /usr/src/gtest && cmake CMakeLists.txt && make && cp lib/*.a /usr/lib
 RUN mkdir -p /usr/local/lib/gtest
 RUN ln -sf /usr/lib/libgtest.a /usr/local/lib/gtest/libgtest.a
 RUN ln -sf /usr/lib/libgtest_main.a /usr/local/lib/gtest/libgtest_main.a
+
+RUN mkdir -p /usr/include/nlohmann \
+    && wget https://raw.githubusercontent.com/nlohmann/json/develop/single_include/nlohmann/json.hpp \
+        -O /usr/include/nlohmann/json.hpp \
+    && wget https://raw.githubusercontent.com/nlohmann/json/develop/single_include/nlohmann/json_fwd.hpp \
+        -O /usr/include/nlohmann/json_fwd.hpp \
+    && wget https://raw.githubusercontent.com/nlohmann/json/develop/LICENSE.MIT -O /usr/include/nlohmann/LICENSE.MIT

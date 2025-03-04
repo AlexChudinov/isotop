@@ -1,3 +1,4 @@
+#isotope-base:1
 FROM ubuntu:22.04
 
 ENV GRPC_SRC_DIR=/usr/src/grpc
@@ -28,4 +29,5 @@ RUN cd ${GRPC_SRC_DIR}/build && cmake \
     .. \
     && make -j 4 \
     && make install
+
 RUN rm -rf ${GRPC_SRC_DIR}/build

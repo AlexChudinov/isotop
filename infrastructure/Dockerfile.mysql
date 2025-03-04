@@ -1,0 +1,5 @@
+FROM mysql:latest
+
+ENV MYSQL_ROOT_PASSWORD=1234567890
+
+COPY mysql/*.sql /docker-entrypoint-initdb.d
